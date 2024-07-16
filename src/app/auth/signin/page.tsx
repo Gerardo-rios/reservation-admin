@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
-import Signin from '@/components/Auth/Signin/sign-in.component';
+import SignInComponent from '@/components/Auth/Signin/signin.component';
 
 export const metadata: Metadata = {
   title: 'Login Page',
@@ -16,7 +16,7 @@ const SignIn: React.FC = () => {
         <div className="flex flex-wrap items-center">
           <div className="w-full xl:w-1/2">
             <div className="w-full p-4 sm:p-12.5 xl:p-15">
-              <Signin />
+              <SignInComponent />
             </div>
           </div>
 
