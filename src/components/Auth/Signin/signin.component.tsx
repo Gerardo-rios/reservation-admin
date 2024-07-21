@@ -10,7 +10,7 @@ export default function SignInComponent() {
         <span className="block h-px w-full bg-stroke dark:bg-dark-3"></span>
       </div>
 
-      <div>
+      <div data-testid="sign-in-form">
         <SignInWithPassword />
       </div>
 
