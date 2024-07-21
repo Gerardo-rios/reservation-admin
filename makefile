@@ -1,13 +1,26 @@
-.PHONY: build run up down
+.PHONY: build run up down test test-all one-test
+
+COMPOSE_FILE = docker-compose.yml
 
 build:
-	docker build -t cancha-admin .
-
-run:
-	docker run -p 3000:3000 cancha-admin
+	docker compose -f $(COMPOSE_FILE) build
 
 up:
-	docker-compose up --build
+	docker compose -f $(COMPOSE_FILE) up -d
 
 down:
-	docker-compose down
+	docker compose -f $(COMPOSE_FILE) down
+
+logs:
+	docker compose -f $(COMPOSE_FILE) logs -f
+
+shell:
+	docker compose -f $(COMPOSE_FILE) exec app /bin/bash
+
+test:
+	docker compose -f $(COMPOSE_FILE) run --rm app npm run test
+
+clean:
+	docker compose -f $(COMPOSE_FILE) down -v --rmi all
+
+restart: down build up

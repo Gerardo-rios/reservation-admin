@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
-import PasswordResetComponent from '@/components/Auth/ForgotPassword/forgotPassword.component';
+import PasswordResetComponent from '@/components/Auth/ForgotPassword/forgot-password.component';
 
 export const metadata: Metadata = {
   title: 'Password Recovery Page',

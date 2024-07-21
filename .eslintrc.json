@@ -2,11 +2,12 @@
   "extends": [
     "react-app",
     "plugin:prettier/recommended",
-    "prettier/react",
-    "next/core-web-vitals"
+    "next/core-web-vitals",
+    "plugin:jest/recommended"
   ],
   "plugins": [
-    "prettier"
+    "prettier",
+    "jest"
   ],
   "rules": {
     "jsx-a11y/href-no-hash": [
@@ -17,7 +18,9 @@
       {
         "extensions": [
           ".js",
-          ".jsx"
+          ".jsx",
+          ".ts",
+          ".tsx"
         ]
       }
     ],

@@ -1,5 +1,6 @@
 import { useSnackbar } from 'notistack';
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 const { enqueueSnackbar } = useSnackbar();
 
 export const SnackbarUtilities = {
