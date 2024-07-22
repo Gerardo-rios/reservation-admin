@@ -3,6 +3,7 @@
 COMPOSE_FILE = docker-compose.yml
 
 build:
+	npm run lint:fix
 	docker compose -f $(COMPOSE_FILE) build
 
 up:

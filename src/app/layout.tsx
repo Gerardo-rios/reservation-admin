@@ -9,7 +9,7 @@ import store, { AppStore } from '@/redux/store';
 import { SnackbarProvider } from 'notistack';
 import { useSelector } from 'react-redux';
 import DefaultLayout from '@/components/Layouts/DefaultLayout.component';
-import { AuthLayout } from '@/components/Layouts';
+import AuthLayout from '@/components/Layouts/AuthLayout.component';
 import { useRouter, usePathname } from 'next/navigation';
 
 export default function RootLayout({
@@ -34,9 +34,9 @@ export default function RootLayout({
       }
     }, [isAuthenticated, router, pathname]);
 
-    if (!isAuthenticated) {
-      return <AuthLayout>{children}</AuthLayout>;
-    }
+    // if (!isAuthenticated) {
+    //   return <AuthLayout>{children}</AuthLayout>;
+    // }
 
     return <DefaultLayout>{children}</DefaultLayout>;
   };

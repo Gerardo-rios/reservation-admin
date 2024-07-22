@@ -1,34 +1,28 @@
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import ClickOutside from "@/components/ClickOutside.component";
-import Image from "next/image";
+import { useState } from 'react';
+import Link from 'next/link';
+import ClickOutside from './ClickOutside';
 
 const notificationList = [
   {
-    image: "/images/user/user-15.png",
-    title: "Piter Joined the Team!",
-    subTitle: "Congratulate him",
+    title: 'Peter Made a reservation!',
+    subTitle: 'Review and confirm'
   },
   {
-    image: "/images/user/user-02.png",
-    title: "New message received",
-    subTitle: "Devid sent you new message",
+    title: 'New message received',
+    subTitle: 'Juan sent you new message'
   },
   {
-    image: "/images/user/user-26.png",
-    title: "New Payment received",
-    subTitle: "Check your earnings",
+    title: 'New Payment received',
+    subTitle: 'Check your earnings'
   },
   {
-    image: "/images/user/user-28.png",
-    title: "Jolly completed tasks",
-    subTitle: "Assign her newtasks",
+    title: 'Jolly ask to finish a reservation',
+    subTitle: 'Confirm or decline'
   },
   {
-    image: "/images/user/user-27.png",
-    title: "Roman Joined the Team!",
-    subTitle: "Congratulate him",
-  },
+    title: 'New message received',
+    subTitle: 'David sent you new message'
+  }
 ];
 
 const DropdownNotification = () => {
@@ -65,7 +59,7 @@ const DropdownNotification = () => {
 
             <span
               className={`absolute -top-0.5 right-0 z-1 h-2.5 w-2.5 rounded-full border-2 border-gray-2 bg-red-light dark:border-dark-3 ${
-                !notifying ? "hidden" : "inline"
+                !notifying ? 'hidden' : 'inline'
               }`}
             >
               <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-red-light opacity-75"></span>
@@ -78,41 +72,17 @@ const DropdownNotification = () => {
             className={`absolute -right-27 mt-7.5 flex h-[550px] w-75 flex-col rounded-xl border-[0.5px] border-stroke bg-white px-5.5 pb-5.5 pt-5 shadow-default dark:border-dark-3 dark:bg-gray-dark sm:right-0 sm:w-[364px]`}
           >
             <div className="mb-5 flex items-center justify-between">
-              <h5 className="text-lg font-medium text-dark dark:text-white">
-                Notifications
-              </h5>
-              <span className="rounded-md bg-primary px-2 py-0.5 text-body-xs font-medium text-white">
-                5 new
-              </span>
+              <h5 className="text-lg font-medium text-dark dark:text-white">Notifications</h5>
+              <span className="rounded-md bg-primary px-2 py-0.5 text-body-xs font-medium text-white">5 new</span>
             </div>
 
             <ul className="no-scrollbar mb-5 flex h-auto flex-col gap-1 overflow-y-auto">
               {notificationList.map((item, index) => (
                 <li key={index}>
-                  <Link
-                    className="flex items-center gap-4 rounded-[10px] p-2.5 hover:bg-gray-2 dark:hover:bg-dark-3"
-                    href="#"
-                  >
-                    <span className="block h-14 w-14 rounded-full">
-                      <Image
-                        width={112}
-                        height={112}
-                        src={item.image}
-                        style={{
-                          width: "auto",
-                          height: "auto",
-                        }}
-                        alt="User"
-                      />
-                    </span>
-
+                  <Link className="flex items-center gap-4 rounded-[10px] p-2.5 hover:bg-gray-2 dark:hover:bg-dark-3" href="#">
                     <span className="block">
-                      <span className="block font-medium text-dark dark:text-white">
-                        {item.title}
-                      </span>
-                      <span className="block text-body-sm font-medium text-dark-5 dark:text-dark-6">
-                        {item.subTitle}
-                      </span>
+                      <span className="block font-medium text-dark dark:text-white">{item.title}</span>
+                      <span className="block text-body-sm font-medium text-dark-5 dark:text-dark-6">{item.subTitle}</span>
                     </span>
                   </Link>
                 </li>
