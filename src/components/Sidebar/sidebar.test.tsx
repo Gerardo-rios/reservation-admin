@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Sidebar from './Sidebar.component';
-import SidebarItem from './SidebarItem';
-import SidebarDropdown from './SidebarDropdown';
+import Sidebar from './sidebar.component';
+import SidebarItem from './sidebar-item';
+import SidebarDropdown from './sidebar-dropdown';
 
 describe('Sidebar', () => {
   it('renders correctly', () => {

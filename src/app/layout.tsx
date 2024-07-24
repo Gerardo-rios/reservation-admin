@@ -3,13 +3,12 @@ import 'flatpickr/dist/flatpickr.css';
 import '@/css/satoshi.css';
 import '@/css/style.css';
 import React, { useEffect, useState } from 'react';
-import Loader from '@/components/common/Loader';
+import Loader from '@/components/common/Loader/loader.component';
 import { Provider } from 'react-redux';
 import store, { AppStore } from '@/redux/store';
 import { SnackbarProvider } from 'notistack';
 import { useSelector } from 'react-redux';
-import DefaultLayout from '@/components/Layouts/DefaultLayout.component';
-import AuthLayout from '@/components/Layouts/AuthLayout.component';
+import DefaultLayout from '@/components/Layouts/default-layout.component';
 import { useRouter, usePathname } from 'next/navigation';
 
 export default function RootLayout({
@@ -28,11 +27,11 @@ export default function RootLayout({
     const router = useRouter();
     const pathname = usePathname();
 
-    useEffect(() => {
-      if (!isAuthenticated && !pathname.startsWith('/auth/')) {
-        router.push('/auth/signin');
-      }
-    }, [isAuthenticated, router, pathname]);
+    // useEffect(() => {
+    //   if (!isAuthenticated && !pathname.startsWith('/auth/')) {
+    //     router.push('/auth/signin');
+    //   }
+    // }, [isAuthenticated, router, pathname]);
 
     // if (!isAuthenticated) {
     //   return <AuthLayout>{children}</AuthLayout>;

@@ -1,4 +1,4 @@
-import { Dashboard } from '@/components/Dashboard';
+import Dashboard from '@/components/Dashboard/dashboard.component';
 import { Metadata } from 'next';
 import React from 'react';
 
