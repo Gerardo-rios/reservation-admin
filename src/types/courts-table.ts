@@ -1,6 +1,6 @@
-export type Package = {
+export type CourtsTableProps = {
   name: string;
   price: number;
-  invoiceDate: string;
+  freeAt: string;
   status: string;
 };
