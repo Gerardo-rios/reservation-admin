@@ -7,6 +7,7 @@ import SidebarDropdown from './sidebar-dropdown';
 describe('Sidebar', () => {
   it('renders correctly', () => {
     render(<Sidebar />);
+
     expect(screen.getByText('MAIN MENU')).toBeInTheDocument();
     expect(screen.getByText('My stores')).toBeInTheDocument();
     expect(screen.getByText('Reservations')).toBeInTheDocument();
@@ -22,20 +23,22 @@ describe('SidebarItem', () => {
     children: [{ label: 'Sub Item', route: '/sub' }]
   };
 
-  it('renders correctly', () => {
+  beforeEach(() => {
     render(<SidebarItem item={mockItem} pageName="" setPageName={mockSetPageName} />);
+  });
+
+  it('renders correctly', () => {
     expect(screen.getByText('Test Item')).toBeInTheDocument();
     expect(screen.getByText('Icon')).toBeInTheDocument();
   });
 
   it('calls setPageName on click', () => {
-    render(<SidebarItem item={mockItem} pageName="" setPageName={mockSetPageName} />);
     fireEvent.click(screen.getByText('Test Item'));
+
     expect(mockSetPageName).toHaveBeenCalledWith('test item');
   });
 
   it('renders dropdown when item has children', () => {
-    render(<SidebarItem item={mockItem} pageName="test item" setPageName={mockSetPageName} />);
     expect(screen.getByText('Sub Item')).toBeInTheDocument();
   });
 });
@@ -47,14 +50,17 @@ jest.mock('next/navigation', () => ({
 describe('SidebarDropdown', () => {
   const mockItems = [{ label: 'Item 1', route: '/test' }];
 
-  it('renders dropdown items correctly', () => {
+  beforeEach(() => {
     render(<SidebarDropdown item={mockItems} />);
+  });
+
+  it('renders dropdown items correctly', () => {
     expect(screen.getByText('Item 1')).toBeInTheDocument();
   });
 
   it('applies active class to current route', () => {
-    render(<SidebarDropdown item={mockItems} />);
     const activeItem = screen.getByText('Item 1').closest('a');
+
     expect(activeItem).toHaveClass('bg-primary/[.07]');
   });
 });

@@ -65,7 +65,7 @@ const DashboardTable = () => {
       key: 'actions',
       header: 'Actions',
       render: () => (
-        <div className="flex items-center justify-end space-x-3.5">
+        <div className="flex items-center space-x-9.5">
           <button className="hover:text-primary">
             <svg className="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path

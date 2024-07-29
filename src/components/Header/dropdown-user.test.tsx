@@ -26,12 +26,14 @@ describe('DropdownUser Component', () => {
   it('displays correct user information in dropdown', () => {
     const link = screen.getByRole('link');
     fireEvent.click(link);
+
     expect(screen.getByText('juancho_ripan@nextadmin.com')).toBeInTheDocument();
   });
 
   it('displays logout button in dropdown', () => {
     const link = screen.getByRole('link');
     fireEvent.click(link);
+
     expect(screen.getByText('Logout')).toBeInTheDocument();
   });
 });

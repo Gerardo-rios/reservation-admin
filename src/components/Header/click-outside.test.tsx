@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import ClickOutside from './click-outside.component';
 
 describe('ClickOutside Component', () => {
@@ -11,16 +11,16 @@ describe('ClickOutside Component', () => {
   });
 
   it('renders children correctly', () => {
-    const { getByText } = render(
+    render(
       <ClickOutside onClick={mockOnClick}>
         <div>{childText}</div>
       </ClickOutside>
     );
-    expect(getByText(childText)).toBeInTheDocument();
+    expect(screen.getByText(childText)).toBeInTheDocument();
   });
 
   it('calls onClick when clicked outside', () => {
-    const { container } = render(
+    render(
       <div>
         <ClickOutside onClick={mockOnClick}>
           <div>{childText}</div>
@@ -29,25 +29,22 @@ describe('ClickOutside Component', () => {
       </div>
     );
 
-    const outsideElement = container.querySelector('[data-testid="outside"]');
-    if (outsideElement) {
-      fireEvent.mouseDown(outsideElement);
-    }
+    fireEvent.mouseDown(screen.getByTestId('outside'));
     expect(mockOnClick).toHaveBeenCalledTimes(1);
   });
 
   it('does not call onClick when clicked inside', () => {
-    const { getByText } = render(
+    render(
       <ClickOutside onClick={mockOnClick}>
         <div>{childText}</div>
       </ClickOutside>
     );
 
-    fireEvent.mouseDown(getByText(childText));
+    fireEvent.mouseDown(screen.getByText(childText));
     expect(mockOnClick).not.toHaveBeenCalled();
   });
 
-  it('respects exceptionRef', () => {
+  it('respects exceptionRef and does not call onClick for exception elements', () => {
     const ExceptionComponent = () => {
       const exceptionRef = React.useRef(null);
 
@@ -63,20 +60,20 @@ describe('ClickOutside Component', () => {
       );
     };
 
-    const { getByTestId } = render(<ExceptionComponent />);
+    render(<ExceptionComponent />);
 
-    fireEvent.mouseDown(getByTestId('exception'));
+    fireEvent.mouseDown(screen.getByTestId('exception'));
     expect(mockOnClick).not.toHaveBeenCalled();
   });
 
   it('applies className correctly', () => {
     const className = 'test-class';
-    const { container } = render(
+    render(
       <ClickOutside onClick={mockOnClick} className={className}>
         <div>{childText}</div>
       </ClickOutside>
     );
 
-    expect(container.firstChild).toHaveClass(className);
+    expect(screen.getByText(childText).parentElement).toHaveClass(className);
   });
 });

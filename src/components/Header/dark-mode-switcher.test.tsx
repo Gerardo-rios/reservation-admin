@@ -20,6 +20,7 @@ describe('DarkModeSwitcher Component', () => {
     const switcher = screen.getByTestId('dark-mode-switcher-button');
     fireEvent.click(switcher);
     const switcherSlider = screen.getByTestId('dark-mode-switcher-slider');
+
     expect(switcherSlider).toHaveClass('translate-x-[51px]');
   });
 });

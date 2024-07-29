@@ -31,7 +31,7 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, data }) => {
           </thead>
           <tbody>
             {data.map((item, rowIndex) => (
-              <tr key={rowIndex} style={{ width: `${100 / columns.length}%` }}>
+              <tr key={rowIndex}>
                 {columns.map((column) => (
                   <td
                     key={`${rowIndex}-${column.key}`}
