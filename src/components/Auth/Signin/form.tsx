@@ -41,7 +41,7 @@ export default function SignInWithPassword() {
         enqueueSnackbar('Login successful', { variant: 'success' });
       }
     } catch (error: any) {
-      enqueueSnackbar(`Login error: ${error.message}`, { variant: 'error' });
+      enqueueSnackbar(error.data.message, { variant: 'error' });
     }
   };
 
