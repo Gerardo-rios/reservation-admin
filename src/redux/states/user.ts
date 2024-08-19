@@ -2,13 +2,23 @@ import { User } from '@/models';
 import { createSlice } from '@reduxjs/toolkit';
 
 export const UserEmptyState: User = {
-  id: '',
-  name: '',
-  email: '',
-  password: '',
-  role: '',
-  created_at: '',
-  updated_at: ''
+  token: '',
+  account: {
+    id: '',
+    username: '',
+    photo: '',
+    email: ''
+  },
+  person: {
+    id: '',
+    name: '',
+    phone: '',
+    address: ''
+  },
+  role: {
+    id: '',
+    name: ''
+  }
 };
 
 export const userSlice = createSlice({

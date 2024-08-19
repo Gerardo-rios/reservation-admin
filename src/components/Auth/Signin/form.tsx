@@ -1,14 +1,52 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
+import useFetchAndLoad from '../../../hooks/use-fetch-and-load.hook';
+import { login } from '../../../services/user.service';
+import { userAdapter } from '../../../adapters/user.adapter';
+import { useDispatch } from 'react-redux';
+import { createUser } from '../../../redux/states/user';
+import { createLoginAuth } from '../../../redux/states/auth';
+import { authAdapter } from '../../../adapters/auth.adapter';
+import { useSnackbar } from 'notistack';
 
 export default function SignInWithPassword() {
-  const [data] = useState({
-    remember: false
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [data, setData] = useState({
+    remember: false,
+    email: '',
+    password: ''
   });
 
+  const { loading, callEndpoint } = useFetchAndLoad();
+  const dispatch = useDispatch();
+
+  const handleChange = (e: { target: { name: any; value: any } }) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const { email, password } = data;
+    try {
+      const loginResponse = await callEndpoint(login(email, password));
+      if (loginResponse) {
+        dispatch(createUser(userAdapter(loginResponse)));
+        dispatch(createLoginAuth(authAdapter(loginResponse)));
+        enqueueSnackbar('Login successful', { variant: 'success' });
+      }
+    } catch (error: any) {
+      enqueueSnackbar(`Login error: ${error.message}`, { variant: 'error' });
+    }
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="mb-4">
         <label htmlFor="email" className="mb-2.5 block font-medium text-dark dark:text-white">
           Email
@@ -18,9 +56,11 @@ export default function SignInWithPassword() {
             type="email"
             placeholder="Enter your email"
             name="email"
+            value={data.email}
+            onChange={handleChange}
             className="w-full rounded-lg border border-stroke bg-transparent py-[15px] pl-6 pr-11 font-medium text-dark outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+            required
           />
-
           <span className="absolute right-4.5 top-1/2 -translate-y-1/2">
             <svg className="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -44,9 +84,11 @@ export default function SignInWithPassword() {
             name="password"
             placeholder="Enter your password"
             autoComplete="password"
+            value={data.password}
+            onChange={handleChange}
             className="w-full rounded-lg border border-stroke bg-transparent py-[15px] pl-6 pr-11 font-medium text-dark outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+            required
           />
-
           <span className="absolute right-4.5 top-1/2 -translate-y-1/2">
             <svg className="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -71,7 +113,14 @@ export default function SignInWithPassword() {
           htmlFor="remember"
           className="flex cursor-pointer select-none items-center font-satoshi text-base font-medium text-dark dark:text-white"
         >
-          <input type="checkbox" name="remember" id="remember" className="peer sr-only" />
+          <input
+            type="checkbox"
+            name="remember"
+            id="remember"
+            checked={data.remember}
+            onChange={() => setData({ ...data, remember: !data.remember })}
+            className="peer sr-only"
+          />
           <span
             className={`mr-2.5 inline-flex h-5.5 w-5.5 items-center justify-center rounded-md border border-stroke bg-white text-white text-opacity-0 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-opacity-100 dark:border-stroke-dark dark:bg-white/5 ${
               data.remember ? 'bg-primary' : ''
@@ -97,14 +146,13 @@ export default function SignInWithPassword() {
         </Link>
       </div>
 
-      <div className="mb-4.5">
-        <button
-          type="submit"
-          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
-        >
-          Sign In
-        </button>
-      </div>
+      <button
+        type="submit"
+        className={`w-full rounded-lg bg-primary py-3 text-white font-medium text-center transition duration-200 ease-in-out ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        disabled={loading}
+      >
+        {loading ? 'Signing in...' : 'Sign In'}
+      </button>
     </form>
   );
 }

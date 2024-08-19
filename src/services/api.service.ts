@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { setupInterceptors } from '@/interceptors';
+import { setupInterceptors } from '../interceptors';
 
 const api = axios.create({
-  baseURL: process.env.PUBLIC_API_URL
+  baseURL: process.env.API_URL
 });
 
 setupInterceptors(api);

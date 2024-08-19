@@ -1,29 +1,38 @@
 import { User } from '@/models';
-import { loadAbort } from '@/utilities';
-import { api } from '@/services';
+import { loadAbort } from '../utilities/load-abort-axios.utility';
+import { api } from '../services';
 
-export const login = () => {
+export const register = (
+  name: string,
+  phone: string,
+  address: string,
+  role_name: string,
+  email: string,
+  password: string,
+  user: string,
+  photo: string
+) => {
   const controller = loadAbort();
   return {
-    call: api.get<User>('/character/2', { signal: controller.signal }),
+    call: api.post<User>(
+      '/account/register',
+      {
+        name: name,
+        phone: phone,
+        address: address,
+        role_name: role_name,
+        email: email,
+        password: password,
+        user: user,
+        photo: photo
+      },
+      { signal: controller.signal }
+    ),
     controller
   };
 };
 
-export const getMorty = () => {
-  return api.get<User>('/character/2');
-};
-
-export const getRick = () => {
-  return api.get<User>('/character/1');
-};
-
-export const getCoolMorty = () => {
+export const login = (email: string, password: string) => {
   const controller = loadAbort();
-  return { call: api.get<User>('/character/2', { signal: controller.signal }), controller };
-};
-
-export const getCoolRick = () => {
-  const controller = loadAbort();
-  return { call: api.get<User>('/character/1', { signal: controller.signal }), controller };
+  return { call: api.post<User>('/account/login', { email: email, password: password }, { signal: controller.signal }), controller };
 };

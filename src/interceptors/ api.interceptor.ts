@@ -1,9 +1,9 @@
 import { AxiosInstance } from 'axios';
+import { createLogoutAuth } from '../redux/states/auth';
 
 export function setupInterceptors(api: AxiosInstance) {
   api.interceptors.request.use(
     (config) => {
-      // Add auth token if available
       const token = localStorage.getItem('token');
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
@@ -17,7 +17,8 @@ export function setupInterceptors(api: AxiosInstance) {
     (response) => response,
     (error) => {
       if (error.response?.status === 401) {
-        // Handle unauthorized access
+        localStorage.removeItem('token');
+        createLogoutAuth();
       }
       return Promise.reject(error);
     }
