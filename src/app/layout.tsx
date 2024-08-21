@@ -32,6 +32,9 @@ export default function RootLayout({
       if (!isAuthenticated && !pathname.startsWith('/auth/')) {
         router.push('/auth/signin');
       }
+      if (isAuthenticated && pathname.startsWith('/auth/')) {
+        router.push('/');
+      }
     }, [isAuthenticated, router, pathname]);
 
     if (!isAuthenticated) {

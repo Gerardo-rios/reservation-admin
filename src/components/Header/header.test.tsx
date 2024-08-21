@@ -1,7 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-
 import Header from './header.component';
+
+jest.mock('./dark-mode-switcher.component', () => {
+  return jest.fn();
+});
+jest.mock('./dropdown-notification.component', () => {
+  return jest.fn();
+});
+jest.mock('./dropdown-user.component', () => {
+  return jest.fn();
+});
 
 describe('Header Component', () => {
   beforeEach(() => {

@@ -15,9 +15,9 @@ export default function SignUpWithPassword() {
     email: '',
     password: '',
     user: '',
-    photo: '',
     name: '',
     phone: '',
+    photo: '',
     address: '',
     role_name: 'admin',
     reEnterPassword: ''
@@ -37,25 +37,28 @@ export default function SignUpWithPassword() {
     });
   };
 
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     for (const key in data) {
       if (!data[key]) {
         enqueueSnackbar('All fields are required', { variant: 'error' });
-        return;
+        return false;
       }
     }
     if (data.password !== data.reEnterPassword) {
       enqueueSnackbar('Password does not match', { variant: 'error' });
-      return;
+      return false;
     }
+    return true;
   };
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    validateForm();
+    if (!validateForm()) {
+      return;
+    }
     try {
       const registerResponse = await callEndpoint(
-        register(data.email, data.password, data.user, data.photo, data.name, data.phone, data.address, data.role_name)
+        register(data.name, data.phone, data.address, data.role_name, data.email, data.password, data.user, data.photo)
       );
       if (registerResponse) {
         enqueueSnackbar('Register success', { variant: 'success' });
@@ -95,35 +98,68 @@ export default function SignUpWithPassword() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mb-4">
-        <label htmlFor="name" className="mb-2.5 block font-medium text-dark dark:text-white">
-          Name
-        </label>
-        <div className="relative">
-          <input
-            placeholder="Enter your full name"
-            className="w-full rounded-lg border border-stroke bg-transparent py-[15px] pl-6 pr-11 font-medium text-dark outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
-            type="text"
-            name="name"
-            value={data.name}
-            onChange={handleChange}
-          />
-          <span className="absolute right-4.5 top-1/2 -translate-y-1/2">
-            <svg className="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M10.9975 1.146C8.59278 1.146 6.64335 3.09542 6.64335 5.50016C6.64335 7.9049 8.59278 9.85433 10.9975 9.85433C13.4023 9.85433 15.3517 7.9049 15.3517 5.50016C15.3517 3.09542 13.4023 1.146 10.9975 1.146ZM8.01835 5.50016C8.01835 3.85481 9.35217 2.521 10.9975 2.521C12.6429 2.521 13.9767 3.85481 13.9767 5.50016C13.9767 7.14551 12.6429 8.47933 10.9975 8.47933C9.35217 8.47933 8.01835 7.14551 8.01835 5.50016Z"
-                fill=""
-              ></path>
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M10.9975 11.2293C8.87676 11.2293 6.92287 11.7114 5.47501 12.5258C4.04871 13.3281 2.97669 14.5441 2.97669 16.0418L2.97662 16.1353C2.97559 17.2003 2.97429 18.537 4.14673 19.4917C4.72374 19.9616 5.53096 20.2958 6.62154 20.5165C7.71518 20.7379 9.14056 20.8543 10.9975 20.8543C12.8545 20.8543 14.2799 20.7379 15.3735 20.5165C16.4641 20.2958 17.2713 19.9616 17.8483 19.4917C19.0207 18.537 19.0194 17.2003 19.0184 16.1353L19.0184 16.0418C19.0184 14.5441 17.9463 13.3281 16.52 12.5258C15.0722 11.7114 13.1183 11.2293 10.9975 11.2293ZM4.35169 16.0418C4.35169 15.2614 4.92128 14.4149 6.14912 13.7242C7.35542 13.0457 9.06819 12.6043 10.9975 12.6043C12.9269 12.6043 14.6396 13.0457 15.8459 13.7242C17.0738 14.4149 17.6434 15.2614 17.6434 16.0418C17.6434 17.2406 17.6064 17.9155 16.9801 18.4255C16.6404 18.7021 16.0726 18.9721 15.1007 19.1688C14.1318 19.3649 12.8072 19.4793 10.9975 19.4793C9.18781 19.4793 7.8632 19.3649 6.89433 19.1688C5.92242 18.9721 5.35463 18.7021 5.01498 18.4255C4.38864 17.9155 4.35169 17.2406 4.35169 16.0418Z"
-                fill=""
-              ></path>
-            </svg>
-          </span>
+      <div className="mb-4 flex items-center justify-between">
+        <div className="w-1/2 pr-2">
+          <label htmlFor="name" className="mb-2.5 block font-medium text-dark dark:text-white">
+            Name
+          </label>
+          <div className="relative">
+            <input
+              placeholder="Enter your full name"
+              className="w-full rounded-lg border border-stroke bg-transparent py-[15px] pl-6 pr-11 font-medium text-dark outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+              type="text"
+              name="name"
+              value={data.name}
+              onChange={handleChange}
+            />
+            <span className="absolute right-4.5 top-1/2 -translate-y-1/2">
+              <svg className="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M10.9975 1.146C8.59278 1.146 6.64335 3.09542 6.64335 5.50016C6.64335 7.9049 8.59278 9.85433 10.9975 9.85433C13.4023 9.85433 15.3517 7.9049 15.3517 5.50016C15.3517 3.09542 13.4023 1.146 10.9975 1.146ZM8.01835 5.50016C8.01835 3.85481 9.35217 2.521 10.9975 2.521C12.6429 2.521 13.9767 3.85481 13.9767 5.50016C13.9767 7.14551 12.6429 8.47933 10.9975 8.47933C9.35217 8.47933 8.01835 7.14551 8.01835 5.50016Z"
+                  fill=""
+                ></path>
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M10.9975 11.2293C8.87676 11.2293 6.92287 11.7114 5.47501 12.5258C4.04871 13.3281 2.97669 14.5441 2.97669 16.0418L2.97662 16.1353C2.97559 17.2003 2.97429 18.537 4.14673 19.4917C4.72374 19.9616 5.53096 20.2958 6.62154 20.5165C7.71518 20.7379 9.14056 20.8543 10.9975 20.8543C12.8545 20.8543 14.2799 20.7379 15.3735 20.5165C16.4641 20.2958 17.2713 19.9616 17.8483 19.4917C19.0207 18.537 19.0194 17.2003 19.0184 16.1353L19.0184 16.0418C19.0184 14.5441 17.9463 13.3281 16.52 12.5258C15.0722 11.7114 13.1183 11.2293 10.9975 11.2293ZM4.35169 16.0418C4.35169 15.2614 4.92128 14.4149 6.14912 13.7242C7.35542 13.0457 9.06819 12.6043 10.9975 12.6043C12.9269 12.6043 14.6396 13.0457 15.8459 13.7242C17.0738 14.4149 17.6434 15.2614 17.6434 16.0418C17.6434 17.2406 17.6064 17.9155 16.9801 18.4255C16.6404 18.7021 16.0726 18.9721 15.1007 19.1688C14.1318 19.3649 12.8072 19.4793 10.9975 19.4793C9.18781 19.4793 7.8632 19.3649 6.89433 19.1688C5.92242 18.9721 5.35463 18.7021 5.01498 18.4255C4.38864 17.9155 4.35169 17.2406 4.35169 16.0418Z"
+                  fill=""
+                ></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+        <div className="w-1/2 pl-2">
+          <label htmlFor="username" className="mb-2.5 block font-medium text-dark dark:text-white">
+            Username
+          </label>
+          <div className="relative">
+            <input
+              placeholder="Enter your username"
+              className="w-full rounded-lg border border-stroke bg-transparent py-[15px] pl-6 pr-11 font-medium text-dark outline-none focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+              type="text"
+              name="user"
+              value={data.user}
+              onChange={handleChange}
+            />
+            <span className="absolute right-4.5 top-1/2 -translate-y-1/2">
+              <svg className="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M10.9975 1.146C8.59278 1.146 6.64335 3.09542 6.64335 5.50016C6.64335 7.9049 8.59278 9.85433 10.9975 9.85433C13.4023 9.85433 15.3517 7.9049 15.3517 5.50016C15.3517 3.09542 13.4023 1.146 10.9975 1.146ZM8.01835 5.50016C8.01835 3.85481 9.35217 2.521 10.9975 2.521C12.6429 2.521 13.9767 3.85481 13.9767 5.50016C13.9767 7.14551 12.6429 8.47933 10.9975 8.47933C9.35217 8.47933 8.01835 7.14551 8.01835 5.50016Z"
+                  fill=""
+                ></path>
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M10.9975 11.2293C8.87676 11.2293 6.92287 11.7114 5.47501 12.5258C4.04871 13.3281 2.97669 14.5441 2.97669 16.0418L2.97662 16.1353C2.97559 17.2003 2.97429 18.537 4.14673 19.4917C4.72374 19.9616 5.53096 20.2958 6.62154 20.5165C7.71518 20.7379 9.14056 20.8543 10.9975 20.8543C12.8545 20.8543 14.2799 20.7379 15.3735 20.5165C16.4641 20.2958 17.2713 19.9616 17.8483 19.4917C19.0207 18.537 19.0194 17.2003 19.0184 16.1353L19.0184 16.0418C19.0184 14.5441 17.9463 13.3281 16.52 12.5258C15.0722 11.7114 13.1183 11.2293 10.9975 11.2293ZM4.35169 16.0418C4.35169 15.2614 4.92128 14.4149 6.14912 13.7242C7.35542 13.0457 9.06819 12.6043 10.9975 12.6043C12.9269 12.6043 14.6396 13.0457 15.8459 13.7242C17.0738 14.4149 17.6434 15.2614 17.6434 16.0418C17.6434 17.2406 17.6064 17.9155 16.9801 18.4255C16.6404 18.7021 16.0726 18.9721 15.1007 19.1688C14.1318 19.3649 12.8072 19.4793 10.9975 19.4793C9.18781 19.4793 7.8632 19.3649 6.89433 19.1688C5.92242 18.9721 5.35463 18.7021 5.01498 18.4255C4.38864 17.9155 4.35169 17.2406 4.35169 16.0418Z"
+                  fill=""
+                ></path>
+              </svg>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -169,54 +205,52 @@ export default function SignUpWithPassword() {
             onMouseEnter={() => setShowPasswordInstructions(true)}
             onMouseLeave={() => setShowPasswordInstructions(false)}
           />
-          <span className="absolute right-4.5 top-1/2 -translate-y-1/2" onClick={toggleShowPassword}>
+          <span className="absolute right-4.5 top-1/2 -translate-y-1/2" onClick={toggleShowPassword} data-testid="eye-icon-password">
             {showPassword && (
               <svg className="fill-current" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
-                  {' '}
                   <path
                     d="M4.4955 7.44088C3.54724 8.11787 2.77843 8.84176 2.1893 9.47978C0.857392 10.9222 0.857393 13.0778 2.1893 14.5202C3.9167 16.391 7.18879 19 12 19C13.2958 19 14.4799 18.8108 15.5523 18.4977L13.8895 16.8349C13.2936 16.9409 12.6638 17 12 17C7.9669 17 5.18832 14.82 3.65868 13.1634C3.03426 12.4872 3.03426 11.5128 3.65868 10.8366C4.23754 10.2097 4.99526 9.50784 5.93214 8.87753L4.4955 7.44088Z"
                     fill="#696969"
-                  ></path>{' '}
+                  ></path>
                   <path
                     d="M8.53299 11.4784C8.50756 11.6486 8.49439 11.8227 8.49439 12C8.49439 13.933 10.0614 15.5 11.9944 15.5C12.1716 15.5 12.3458 15.4868 12.516 15.4614L8.53299 11.4784Z"
                     fill="#696969"
-                  ></path>{' '}
+                  ></path>
                   <path
                     d="M15.4661 12.4471L11.5473 8.52829C11.6937 8.50962 11.8429 8.5 11.9944 8.5C13.9274 8.5 15.4944 10.067 15.4944 12C15.4944 12.1515 15.4848 12.3007 15.4661 12.4471Z"
                     fill="#696969"
-                  ></path>{' '}
+                  ></path>
                   <path
                     d="M18.1118 15.0928C19.0284 14.4702 19.7715 13.7805 20.3413 13.1634C20.9657 12.4872 20.9657 11.5128 20.3413 10.8366C18.8117 9.18002 16.0331 7 12 7C11.3594 7 10.7505 7.05499 10.1732 7.15415L8.50483 5.48582C9.5621 5.1826 10.7272 5 12 5C16.8112 5 20.0833 7.60905 21.8107 9.47978C23.1426 10.9222 23.1426 13.0778 21.8107 14.5202C21.2305 15.1486 20.476 15.8603 19.5474 16.5284L18.1118 15.0928Z"
                     fill="#696969"
-                  ></path>{' '}
+                  ></path>
                   <path
                     d="M2.00789 3.42207C1.61736 3.03155 1.61736 2.39838 2.00789 2.00786C2.39841 1.61733 3.03158 1.61733 3.4221 2.00786L22.0004 20.5862C22.391 20.9767 22.391 21.6099 22.0004 22.0004C21.6099 22.3909 20.9767 22.3909 20.5862 22.0004L2.00789 3.42207Z"
                     fill="#696969"
-                  ></path>{' '}
+                  ></path>
                 </g>
               </svg>
             )}
             {!showPassword && (
               <svg className="fill-current" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
-                  {' '}
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M11.9944 15.5C13.9274 15.5 15.4944 13.933 15.4944 12C15.4944 10.067 13.9274 8.5 11.9944 8.5C10.0614 8.5 8.49439 10.067 8.49439 12C8.49439 13.933 10.0614 15.5 11.9944 15.5ZM11.9944 13.4944C11.1691 13.4944 10.5 12.8253 10.5 12C10.5 11.1747 11.1691 10.5056 11.9944 10.5056C12.8197 10.5056 13.4888 11.1747 13.4888 12C13.4888 12.8253 12.8197 13.4944 11.9944 13.4944Z"
                     fill="#545454"
-                  ></path>{' '}
+                  ></path>
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M12 5C7.18879 5 3.9167 7.60905 2.1893 9.47978C0.857392 10.9222 0.857393 13.0778 2.1893 14.5202C3.9167 16.391 7.18879 19 12 19C16.8112 19 20.0833 16.391 21.8107 14.5202C23.1426 13.0778 23.1426 10.9222 21.8107 9.47978C20.0833 7.60905 16.8112 5 12 5ZM3.65868 10.8366C5.18832 9.18002 7.9669 7 12 7C16.0331 7 18.8117 9.18002 20.3413 10.8366C20.9657 11.5128 20.9657 12.4872 20.3413 13.1634C18.8117 14.82 16.0331 17 12 17C7.9669 17 5.18832 14.82 3.65868 13.1634C3.03426 12.4872 3.03426 11.5128 3.65868 10.8366Z"
                     fill="#545454"
-                  ></path>{' '}
+                  ></path>
                 </g>
               </svg>
             )}
@@ -250,54 +284,52 @@ export default function SignUpWithPassword() {
             onBlur={handleRetypePassword}
             onChange={handleChange}
           />
-          <span className="absolute right-4.5 top-1/2 -translate-y-1/2" onClick={toggleShowPassword}>
+          <span className="absolute right-4.5 top-1/2 -translate-y-1/2" onClick={toggleShowPassword} data-testid="eye-icon-password-retype">
             {showPassword && (
               <svg className="fill-current" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
-                  {' '}
                   <path
                     d="M4.4955 7.44088C3.54724 8.11787 2.77843 8.84176 2.1893 9.47978C0.857392 10.9222 0.857393 13.0778 2.1893 14.5202C3.9167 16.391 7.18879 19 12 19C13.2958 19 14.4799 18.8108 15.5523 18.4977L13.8895 16.8349C13.2936 16.9409 12.6638 17 12 17C7.9669 17 5.18832 14.82 3.65868 13.1634C3.03426 12.4872 3.03426 11.5128 3.65868 10.8366C4.23754 10.2097 4.99526 9.50784 5.93214 8.87753L4.4955 7.44088Z"
                     fill="#696969"
-                  ></path>{' '}
+                  ></path>
                   <path
                     d="M8.53299 11.4784C8.50756 11.6486 8.49439 11.8227 8.49439 12C8.49439 13.933 10.0614 15.5 11.9944 15.5C12.1716 15.5 12.3458 15.4868 12.516 15.4614L8.53299 11.4784Z"
                     fill="#696969"
-                  ></path>{' '}
+                  ></path>
                   <path
                     d="M15.4661 12.4471L11.5473 8.52829C11.6937 8.50962 11.8429 8.5 11.9944 8.5C13.9274 8.5 15.4944 10.067 15.4944 12C15.4944 12.1515 15.4848 12.3007 15.4661 12.4471Z"
                     fill="#696969"
-                  ></path>{' '}
+                  ></path>
                   <path
                     d="M18.1118 15.0928C19.0284 14.4702 19.7715 13.7805 20.3413 13.1634C20.9657 12.4872 20.9657 11.5128 20.3413 10.8366C18.8117 9.18002 16.0331 7 12 7C11.3594 7 10.7505 7.05499 10.1732 7.15415L8.50483 5.48582C9.5621 5.1826 10.7272 5 12 5C16.8112 5 20.0833 7.60905 21.8107 9.47978C23.1426 10.9222 23.1426 13.0778 21.8107 14.5202C21.2305 15.1486 20.476 15.8603 19.5474 16.5284L18.1118 15.0928Z"
                     fill="#696969"
-                  ></path>{' '}
+                  ></path>
                   <path
                     d="M2.00789 3.42207C1.61736 3.03155 1.61736 2.39838 2.00789 2.00786C2.39841 1.61733 3.03158 1.61733 3.4221 2.00786L22.0004 20.5862C22.391 20.9767 22.391 21.6099 22.0004 22.0004C21.6099 22.3909 20.9767 22.3909 20.5862 22.0004L2.00789 3.42207Z"
                     fill="#696969"
-                  ></path>{' '}
+                  ></path>
                 </g>
               </svg>
             )}
             {!showPassword && (
               <svg className="fill-current" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
-                  {' '}
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M11.9944 15.5C13.9274 15.5 15.4944 13.933 15.4944 12C15.4944 10.067 13.9274 8.5 11.9944 8.5C10.0614 8.5 8.49439 10.067 8.49439 12C8.49439 13.933 10.0614 15.5 11.9944 15.5ZM11.9944 13.4944C11.1691 13.4944 10.5 12.8253 10.5 12C10.5 11.1747 11.1691 10.5056 11.9944 10.5056C12.8197 10.5056 13.4888 11.1747 13.4888 12C13.4888 12.8253 12.8197 13.4944 11.9944 13.4944Z"
                     fill="#545454"
-                  ></path>{' '}
+                  ></path>
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M12 5C7.18879 5 3.9167 7.60905 2.1893 9.47978C0.857392 10.9222 0.857393 13.0778 2.1893 14.5202C3.9167 16.391 7.18879 19 12 19C16.8112 19 20.0833 16.391 21.8107 14.5202C23.1426 13.0778 23.1426 10.9222 21.8107 9.47978C20.0833 7.60905 16.8112 5 12 5ZM3.65868 10.8366C5.18832 9.18002 7.9669 7 12 7C16.0331 7 18.8117 9.18002 20.3413 10.8366C20.9657 11.5128 20.9657 12.4872 20.3413 13.1634C18.8117 14.82 16.0331 17 12 17C7.9669 17 5.18832 14.82 3.65868 13.1634C3.03426 12.4872 3.03426 11.5128 3.65868 10.8366Z"
                     fill="#545454"
-                  ></path>{' '}
+                  ></path>
                 </g>
               </svg>
             )}
@@ -316,6 +348,14 @@ export default function SignUpWithPassword() {
             name="phone"
             value={data.phone}
             onChange={handleChange}
+            onKeyDown={(event) => {
+              if (event.key === 'Backspace' || event.key === 'Delete') {
+                return;
+              }
+              if (!/[0-9]/.test(event.key)) {
+                event.preventDefault();
+              }
+            }}
           />
           <span className="absolute right-4.5 top-1/2 -translate-y-1/2">
             <svg className="fill-current" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -368,7 +408,7 @@ export default function SignUpWithPassword() {
         </div>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4" data-testid="avatar-input">
         <label htmlFor="photo" className="mb-2.5 block font-medium text-dark dark:text-white">
           Avatar
         </label>

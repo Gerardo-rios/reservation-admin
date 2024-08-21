@@ -4,20 +4,20 @@ export function userAdapter(data: any): User {
   return {
     token: data.token,
     account: {
-      id: data.account.id,
-      username: data.account.user,
-      photo: data.account.photo,
-      email: data.account.email
+      id: data.session.account.account_id,
+      username: data.session.account.user,
+      photo: data.session.account.photo,
+      email: data.session.account.email
     },
     person: {
-      id: data.person.id,
-      name: data.person.name,
-      phone: data.person.phone,
-      address: data.person.address
+      id: data.session.person.person_id,
+      name: data.session.person.name,
+      phone: data.session.person.phone,
+      address: data.session.person.address
     },
     role: {
-      id: data.role.id,
-      name: data.role.role_name
+      id: data.session.role.role_id,
+      name: data.session.role.role_name
     }
   };
 }

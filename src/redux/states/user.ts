@@ -1,33 +1,44 @@
 import { User } from '@/models';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export const UserEmptyState: User = {
-  token: '',
+const localStorageUser = typeof window !== 'undefined' && localStorage.getItem('user');
+
+export const UserInitialState: User = {
+  token: typeof window !== 'undefined' ? localStorage.getItem('token') : null,
   account: {
-    id: '',
-    username: '',
-    photo: '',
-    email: ''
+    id: localStorageUser ? JSON.parse(localStorageUser).account.id : '',
+    username: localStorageUser ? JSON.parse(localStorageUser).account.username : '',
+    photo: localStorageUser ? JSON.parse(localStorageUser).account.photo : '',
+    email: localStorageUser ? JSON.parse(localStorageUser).account.email : ''
   },
   person: {
-    id: '',
-    name: '',
-    phone: '',
-    address: ''
+    id: localStorageUser ? JSON.parse(localStorageUser).person.id : '',
+    name: localStorageUser ? JSON.parse(localStorageUser).person.name : '',
+    phone: localStorageUser ? JSON.parse(localStorageUser).person.phone : '',
+    address: localStorageUser ? JSON.parse(localStorageUser).person.address : ''
   },
   role: {
-    id: '',
-    name: ''
+    id: localStorageUser ? JSON.parse(localStorageUser).role.id : '',
+    name: localStorageUser ? JSON.parse(localStorageUser).role.name : ''
   }
 };
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState: UserEmptyState,
+  initialState: UserInitialState,
   reducers: {
-    createUser: (state, action) => action.payload,
+    createUser: (state, action: PayloadAction<User>) => {
+      state.token = action.payload.token;
+      state.account = action.payload.account;
+      state.person = action.payload.person;
+      state.role = action.payload.role;
+      localStorage.setItem('user', JSON.stringify(action.payload));
+    },
     modifyUser: (state, action) => ({ ...state, ...action.payload }),
-    resetUser: () => UserEmptyState
+    resetUser: () => {
+      localStorage.removeItem('user');
+      return UserInitialState;
+    }
   }
 });
 

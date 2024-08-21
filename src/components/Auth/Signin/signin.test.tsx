@@ -12,6 +12,17 @@ const store = mockStore({
   user: { user: null }
 });
 
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      route: '/',
+      pathname: '',
+      query: '',
+      asPath: ''
+    };
+  }
+}));
+
 describe('SignInWithPassword form tests', () => {
   beforeEach(() => {
     render(
