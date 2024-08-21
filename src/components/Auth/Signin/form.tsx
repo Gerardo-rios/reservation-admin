@@ -1,13 +1,12 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import useFetchAndLoad from '../../../hooks/use-fetch-and-load.hook';
-import { login } from '../../../services/user.service';
-import { userAdapter } from '../../../adapters/user.adapter';
+import useFetchAndLoad from '@/hooks/use-fetch-and-load.hook';
+import { login } from '@/services/user.service';
+import { userAdapter, authAdapter } from '@/adapters';
 import { useDispatch } from 'react-redux';
-import { createUser } from '../../../redux/states/user';
-import { createLoginAuth } from '../../../redux/states/auth';
-import { authAdapter } from '../../../adapters/auth.adapter';
+import { createUser } from '@/redux/states/user';
+import { createLoginAuth } from '@/redux/states/auth';
 import { useSnackbar } from 'notistack';
 
 export default function SignInWithPassword() {

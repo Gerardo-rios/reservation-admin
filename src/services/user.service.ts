@@ -1,6 +1,6 @@
 import { User } from '@/models';
-import { loadAbort } from '../utilities/load-abort-axios.utility';
-import { api } from '../services';
+import { loadAbort } from '@/utilities';
+import { api } from '@/services';
 
 export const register = (
   name: string,
@@ -15,7 +15,7 @@ export const register = (
   const controller = loadAbort();
   return {
     call: api.post<User>(
-      '/account/register',
+      '/account/create',
       {
         name: name,
         phone: phone,

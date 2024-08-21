@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setupInterceptors } from '../interceptors';
+import { setupInterceptors } from '@/interceptors';
 import { ENV_VARIABLES } from 'config/config';
 
 const api = axios.create({
