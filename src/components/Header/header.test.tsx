@@ -13,11 +13,11 @@ describe('Header Component', () => {
   });
 
   it('displays the correct title', () => {
-    expect(screen.getByText('Fields Admin')).toBeInTheDocument();
+    expect(screen.getByText('Business name of the manager')).toBeInTheDocument();
   });
 
   it('displays the correct subtitle', () => {
-    expect(screen.getByText('Fields Admin Page')).toBeInTheDocument();
+    expect(screen.getByText('Admin Page')).toBeInTheDocument();
   });
 
   it('renders the DarkModeSwitcher component', () => {
