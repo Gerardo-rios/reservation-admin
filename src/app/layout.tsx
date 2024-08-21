@@ -10,6 +10,7 @@ import { SnackbarProvider } from 'notistack';
 import { useSelector } from 'react-redux';
 import DefaultLayout from '@/components/Layouts/default-layout.component';
 import { useRouter, usePathname } from 'next/navigation';
+import AuthLayout from '@/components/Layouts/auth-layout.component';
 
 export default function RootLayout({
   children
@@ -27,15 +28,18 @@ export default function RootLayout({
     const router = useRouter();
     const pathname = usePathname();
 
-    // useEffect(() => {
-    //   if (!isAuthenticated && !pathname.startsWith('/auth/')) {
-    //     router.push('/auth/signin');
-    //   }
-    // }, [isAuthenticated, router, pathname]);
+    useEffect(() => {
+      if (!isAuthenticated && !pathname.startsWith('/auth/')) {
+        router.push('/auth/signin');
+      }
+      if (isAuthenticated && pathname.startsWith('/auth/')) {
+        router.push('/');
+      }
+    }, [isAuthenticated, router, pathname]);
 
-    // if (!isAuthenticated) {
-    //   return <AuthLayout>{children}</AuthLayout>;
-    // }
+    if (!isAuthenticated) {
+      return <AuthLayout>{children}</AuthLayout>;
+    }
 
     return <DefaultLayout>{children}</DefaultLayout>;
   };

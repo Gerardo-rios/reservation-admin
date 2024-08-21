@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { AxiosCall } from '@/models';
 import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
@@ -10,14 +9,14 @@ const useFetchAndLoad = () => {
   const callEndpoint = async (axiosCall: AxiosCall<any>) => {
     if (axiosCall.controller) controller = axiosCall.controller;
     setLoading(true);
-    let result = {} as AxiosResponse<any>;
+    let result: AxiosResponse<any> | undefined;
     try {
       result = await axiosCall.call;
     } catch (err: any) {
+      return Promise.reject(err.response || err);
+    } finally {
       setLoading(false);
-      throw err;
     }
-    setLoading(false);
     return result;
   };
 

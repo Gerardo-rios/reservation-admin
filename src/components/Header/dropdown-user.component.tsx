@@ -2,9 +2,22 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import ClickOutside from './click-outside.component';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { createLogoutAuth } from '@/redux/states/auth';
+import { resetUser } from '@/redux/states/user';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const user = useSelector((state: any) => state.user);
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(createLogoutAuth());
+    dispatch(resetUser());
+    router.push('/auth/signin');
+  };
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -13,7 +26,7 @@ const DropdownUser = () => {
           <Image
             width={112}
             height={112}
-            src="/images/user/user-03.png"
+            src={user.account.photo}
             style={{
               width: 'auto',
               height: 'auto'
@@ -24,7 +37,7 @@ const DropdownUser = () => {
         </span>
 
         <span className="flex items-center gap-2 font-medium text-dark dark:text-dark-6">
-          <span className="hidden lg:block">Evo Morales</span>
+          <span className="hidden lg:block">{user.person.name}</span>
 
           <svg
             className={`fill-current duration-200 ease-in ${dropdownOpen && 'rotate-180'}`}
@@ -50,13 +63,16 @@ const DropdownUser = () => {
         >
           <div className="flex items-center gap-2.5 px-5 pb-5.5 pt-3.5">
             <span className="block">
-              <span className="block font-medium text-dark dark:text-white">Juancho Ripan</span>
-              <span className="block font-medium text-dark-5 dark:text-dark-6">juancho_ripan@nextadmin.com</span>
+              <span className="block font-medium text-dark dark:text-white">{user.account.username}</span>
+              <span className="block font-medium text-dark-5 dark:text-dark-6">{user.account.email}</span>
             </span>
           </div>
 
           <div className="p-2.5">
-            <button className="flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium text-dark-4 duration-300 ease-in-out hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 dark:hover:text-white lg:text-base">
+            <button
+              className="flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium text-dark-4 duration-300 ease-in-out hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 dark:hover:text-white lg:text-base"
+              onClick={handleLogout}
+            >
               <svg className="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_1815_13085)">
                   <path
