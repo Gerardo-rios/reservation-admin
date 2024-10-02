@@ -55,3 +55,26 @@ make down
 make test
 ```
 
+## Local Deployment
+
+The application could be deployed locally using minikube and kubeclt. The following steps are required to deploy the application:
+
+1. Start minikube:
+
+```bash
+minikube start
+```
+
+2. Push the Docker image
+
+```bash
+make docker-push VERSION=1.0.0
+```
+
+3. Deploy the application
+
+```bash
+make local-deploy VERSION=1.0.0
+```
+
+
