@@ -1,25 +1,30 @@
 import { User } from '@/models';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getLocalStorageItem } from '@/utilities';
 
-const localStorageUser = typeof window !== 'undefined' && localStorage.getItem('user');
+const parseUserFromLocalStorage = () => {
+  const storedUser = getLocalStorageItem('user');
+  return storedUser ? JSON.parse(storedUser) : null;
+};
+
+const localStorageUser = parseUserFromLocalStorage();
 
 export const UserInitialState: User = {
-  token: typeof window !== 'undefined' ? localStorage.getItem('token') : null,
   account: {
-    id: localStorageUser ? JSON.parse(localStorageUser).account.id : '',
-    username: localStorageUser ? JSON.parse(localStorageUser).account.username : '',
-    photo: localStorageUser ? JSON.parse(localStorageUser).account.photo : '',
-    email: localStorageUser ? JSON.parse(localStorageUser).account.email : ''
+    id: localStorageUser?.account?.id || '',
+    username: localStorageUser?.account?.username || '',
+    photo: localStorageUser?.account?.photo || '',
+    email: localStorageUser?.account?.email || ''
   },
   person: {
-    id: localStorageUser ? JSON.parse(localStorageUser).person.id : '',
-    name: localStorageUser ? JSON.parse(localStorageUser).person.name : '',
-    phone: localStorageUser ? JSON.parse(localStorageUser).person.phone : '',
-    address: localStorageUser ? JSON.parse(localStorageUser).person.address : ''
+    id: localStorageUser?.person?.id || '',
+    name: localStorageUser?.person?.name || '',
+    phone: localStorageUser?.person?.phone || '',
+    address: localStorageUser?.person?.address || ''
   },
   role: {
-    id: localStorageUser ? JSON.parse(localStorageUser).role.id : '',
-    name: localStorageUser ? JSON.parse(localStorageUser).role.name : ''
+    id: localStorageUser?.role?.id || '',
+    name: localStorageUser?.role?.name || ''
   }
 };
 
@@ -28,15 +33,14 @@ export const userSlice = createSlice({
   initialState: UserInitialState,
   reducers: {
     createUser: (state, action: PayloadAction<User>) => {
-      state.token = action.payload.token;
       state.account = action.payload.account;
       state.person = action.payload.person;
       state.role = action.payload.role;
-      localStorage.setItem('user', JSON.stringify(action.payload));
     },
-    modifyUser: (state, action) => ({ ...state, ...action.payload }),
+    modifyUser: (state, action) => {
+      Object.assign(state, action.payload);
+    },
     resetUser: () => {
-      localStorage.removeItem('user');
       return UserInitialState;
     }
   }

@@ -67,7 +67,9 @@ export default function SignUpWithPassword() {
         }, 500);
       }
     } catch (error: any) {
-      enqueueSnackbar('Registration failed. Please try again later', { variant: 'error' });
+      console.log(error);
+      if (error.data.message) enqueueSnackbar(error.data.message, { variant: 'error' });
+      else enqueueSnackbar('Something went wrong. Please try again later', { variant: 'error' });
     }
   };
 

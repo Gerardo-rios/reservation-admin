@@ -1,3 +1,9 @@
-export function authAdapter(data: any): string {
-  return data.token;
+import { AuthState } from '@/models';
+
+export function authAdapter(data: any): AuthState {
+  return {
+    isAuthenticated: true,
+    token: data.token,
+    account: data.account
+  };
 }

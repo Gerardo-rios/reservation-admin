@@ -35,16 +35,16 @@ export default function SignInWithPassword() {
     try {
       const loginResponse = await callEndpoint(login(email, password));
       if (loginResponse) {
-        console.log(loginResponse);
         dispatch(createLoginAuth(authAdapter(loginResponse.data)));
         enqueueSnackbar('Login successful', { variant: 'success' });
         setTimeout(() => {
           router.push('/');
-        }, 500);
+        }, 1000);
       }
     } catch (error: any) {
       console.log(error);
-      enqueueSnackbar('Something went wrong. Please try again later', { variant: 'error' });
+      if (error.data.message) enqueueSnackbar(error.data.message, { variant: 'error' });
+      else enqueueSnackbar('Something went wrong. Please try again later', { variant: 'error' });
     }
   };
 
