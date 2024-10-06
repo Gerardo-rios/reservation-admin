@@ -17,7 +17,6 @@ jest.mock('next/navigation', () => ({
 }));
 
 const mockedUser: User = {
-  token: 'test_token',
   account: {
     id: '1',
     username: 'juancho_ripan',
