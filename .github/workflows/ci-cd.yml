@@ -1,0 +1,26 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run tests
+        run: make test
+      
+      - name: Build Docker
+        run: make build
+       
+      - name: Push Docker
+        run: make docker-push VERSION=${{ github.sha }}
+      
+      - name: Deploy
+        run: make local-deploy VERSION=${{ github.sha }}

@@ -18,5 +18,6 @@ kubectl wait --for=condition=complete --timeout=300s service/nextjs-service
 
 echo "Deployment of version ${VERSION} completed!"
 
-echo "You can access the Admin page at the following URL:"
-minikube service nextjs-service --url
+echo "You can access the Admin page by running the following command:"
+
+echo "minikube service nextjs-service --url"
