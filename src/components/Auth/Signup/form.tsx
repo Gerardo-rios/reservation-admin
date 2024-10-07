@@ -62,10 +62,14 @@ export default function SignUpWithPassword() {
       );
       if (registerResponse) {
         enqueueSnackbar('Register success', { variant: 'success' });
-        router.push('/auth/signin');
+        setTimeout(() => {
+          router.push('/auth/signin');
+        }, 500);
       }
     } catch (error: any) {
-      enqueueSnackbar(error.data.message || 'Registration failed', { variant: 'error' });
+      console.log(error);
+      if (error.data.message) enqueueSnackbar(error.data.message, { variant: 'error' });
+      else enqueueSnackbar('Something went wrong. Please try again later', { variant: 'error' });
     }
   };
 

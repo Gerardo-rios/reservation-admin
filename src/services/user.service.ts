@@ -36,3 +36,8 @@ export const login = (email: string, password: string) => {
   const controller = loadAbort();
   return { call: api.post<User>('/account/login', { email: email, password: password }, { signal: controller.signal }), controller };
 };
+
+export const getUser = (account_id: string) => {
+  const controller = loadAbort();
+  return { call: api.get<User>(`/account/${account_id}`, { signal: controller.signal }), controller };
+};

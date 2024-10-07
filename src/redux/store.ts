@@ -7,6 +7,7 @@ export interface AppStore {
   auth: {
     isAuthenticated: boolean;
     token: string | null;
+    account: string | null;
   };
 }
 

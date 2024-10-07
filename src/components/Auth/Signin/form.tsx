@@ -3,12 +3,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import useFetchAndLoad from '@/hooks/use-fetch-and-load.hook';
 import { login } from '@/services/user.service';
-import { userAdapter, authAdapter } from '@/adapters';
 import { useDispatch } from 'react-redux';
-import { createUser } from '@/redux/states/user';
 import { createLoginAuth } from '@/redux/states/auth';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
+import { authAdapter } from '@/adapters';
 
 export default function SignInWithPassword() {
   const { enqueueSnackbar } = useSnackbar();
@@ -36,14 +35,16 @@ export default function SignInWithPassword() {
     try {
       const loginResponse = await callEndpoint(login(email, password));
       if (loginResponse) {
-        dispatch(createUser(userAdapter(loginResponse.data)));
         dispatch(createLoginAuth(authAdapter(loginResponse.data)));
         enqueueSnackbar('Login successful', { variant: 'success' });
-        router.push('/');
+        setTimeout(() => {
+          router.push('/');
+        }, 1000);
       }
     } catch (error: any) {
       console.log(error);
-      enqueueSnackbar(error.data.message || 'Something went wrong', { variant: 'error' });
+      if (error.data.message) enqueueSnackbar(error.data.message, { variant: 'error' });
+      else enqueueSnackbar('Something went wrong. Please try again later', { variant: 'error' });
     }
   };
 
