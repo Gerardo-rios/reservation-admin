@@ -1,8 +1,8 @@
 
 # reservation-admin
-Frontend Admin for reservation app that is part for ioet university 2.0
+Frontend Admin for reservation system.
 
-This project is a court administration application developed with Next.js 14.
+This project is an app administration application developed with Next.js 14.
 
 ## Prerequisites
 
