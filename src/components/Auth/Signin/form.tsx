@@ -33,9 +33,17 @@ export default function SignInWithPassword() {
     e.preventDefault();
     const { email, password } = data;
     try {
-      const loginResponse = await callEndpoint(login(email, password));
+      // const loginResponse = await callEndpoint(login(email, password));
+      const loginResponse = {
+        data: {
+          isAuthenticated: true,
+          token: 'token',
+          account: 'account'
+        }
+      };
       if (loginResponse) {
-        dispatch(createLoginAuth(authAdapter(loginResponse.data)));
+        // dispatch(createLoginAuth(authAdapter(loginResponse.data)));
+        dispatch(createLoginAuth(authAdapter(loginResponse)));
         enqueueSnackbar('Login successful', { variant: 'success' });
         setTimeout(() => {
           router.push('/');

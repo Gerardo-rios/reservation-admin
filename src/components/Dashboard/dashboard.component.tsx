@@ -18,9 +18,31 @@ const Dashboard: React.FC = () => {
   const fetchData = useCallback(async () => {
     if (accountId) {
       try {
-        const getAccountResponse = await callEndpoint(getUser(accountId));
+        // const getAccountResponse = await callEndpoint(getUser(accountId));
+        const getAccountResponse = {
+          data: {
+            account: {
+              account_id: 1,
+              username: 'Juancho Perez',
+              photo: '/images/avatars/hacker.png',
+              email: 'juanchito@gmail.com'
+            },
+            person: {
+              person_id: 1,
+              name: 'Juancho Perez',
+              phone: '1234567890',
+              address: 'Calle 123'
+            },
+            role: {
+              role_id: 1,
+              role_name: 'Admin'
+            }
+          }
+        };
         if (getAccountResponse) {
-          dispatch(createUser(userAdapter(getAccountResponse.data)));
+          // dispatch(createUser(userAdapter(getAccountResponse.data)));
+          console.log('getAccountResponse', getAccountResponse);
+          dispatch(createUser(userAdapter(getAccountResponse)));
         }
       } catch (error) {
         console.error('Error fetching user data:', error);

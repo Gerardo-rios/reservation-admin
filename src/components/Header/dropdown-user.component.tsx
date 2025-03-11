@@ -9,7 +9,17 @@ import { resetUser } from '@/redux/states/user';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const user = useSelector((state: any) => state.user);
+  // const user = useSelector((state: any) => state.user);
+  const user = {
+    account: {
+      photo: '/images/avatars/hacker.png',
+      username: 'Juancho Perez',
+      email: 'juanchito@gmail.com'
+    },
+    person: {
+      name: 'Juancho Perez'
+    }
+  };
   const router = useRouter();
   const dispatch = useDispatch();
 

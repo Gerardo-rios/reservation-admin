@@ -57,9 +57,14 @@ export default function SignUpWithPassword() {
       return;
     }
     try {
-      const registerResponse = await callEndpoint(
-        register(data.name, data.phone, data.address, data.role_name, data.email, data.password, data.user, data.photo)
-      );
+      // const registerResponse = await callEndpoint(
+      //   register(data.name, data.phone, data.address, data.role_name, data.email, data.password, data.user, data.photo)
+      // );
+      const registerResponse = {
+        data: {
+          message: 'Register success'
+        }
+      };
       if (registerResponse) {
         enqueueSnackbar('Register success', { variant: 'success' });
         setTimeout(() => {
